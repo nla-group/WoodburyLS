@@ -1,2 +1,2 @@
 # WoodburyLS
-Fast solution of least squares problems with low-rank updates
+Fast solution of least squares problems with low-rank modification
