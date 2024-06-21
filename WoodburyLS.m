@@ -1,6 +1,7 @@
 function [x,AtAsolver] = WoodburyLS(A,b,U,V,x0,AtAsolver)
-%WoodburyLS Solve least squares problem min_x || b - (A+UV')x ||
+%WoodburyLS Solves the least squares problem min_x ||b - (A+UV')x||
 % where A is an m x n matrix, m >= n, and U and V have r columns.
+% Requires A and A+UV' to be full rank.
 %
 % First call:
 %   [x0,AtAsolver] = WoodburyLS(A,b) returns LS solution x0 = A\b
