@@ -19,3 +19,21 @@ x1 = Rhat\(Qhat'*b);                           %
 % better solve modified LS problem like this:
 x2 = WoodburyLS(A,b,U,V,x0,AtAsolver);         % 0.037 seconds
 ```
+
+**Preprint** 
+
+For more details, check out https://arxiv.org/abs/2406.15120
+
+**BibTeX:**
+```
+@techreport{GNWB24,
+  title   = {A {S}herman--{M}orrison--{W}oodbury approach to solving least squares problems with low-rank updates},
+  author  = {G\"{u}ttel, Stefan and Nakatsukasa, Yuji and Webb, Marcus and Bloor Riley, Alban},
+  year    = {2024},
+  number  = {arXiv:2406.15120},
+  pages   = {6},
+  institution = {arXiv}, 
+  type    = {arXiv EPrint},
+  url     = {https://arxiv.org/abs/2406.15120}
+}
+```
