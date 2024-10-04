@@ -11,7 +11,7 @@ function [x,AtAsolver] = WoodburyLS(A,b,U,V,x0,AtAsolver)
 %   x = WoodburyLS(A,b,U,V,x0,AtAsolver) returns the LS solution
 %   x = (A+U*V')\b using a given solution x0 = A\b and AtAsolver.
 
-if nargin < 3
+if nargin < 6
     [Q,R] = qr(A,0); x = R \ (Q'*b);
     AtAsolver = @(X) R \ (R' \ X);
     return
