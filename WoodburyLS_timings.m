@@ -1,18 +1,16 @@
-close all
-clear all
-clc
-
+close all; clear all; clc
+rng('default')
 runs = 10;
 
 m = 1e5; 
-NN = [ 100:100:1000 ];
+NN = 100:100:1000;
 RR = [10,20,30];
 
 T_qr0 = [];
 T_qr1 = [];
 T_chol = [];
 T_update = [];
-ACC = [];
+ERR = []; ERR2 = [];
 
 for i = 1:length(NN), n = NN(i); 
     disp(['cols n = ' num2str(n) ])
@@ -64,13 +62,25 @@ for i = 1:length(NN), n = NN(i);
             tt(end+1) = toc;
         end
         T_update(i,j,:) = tt;
-
         ERR(i,j) = norm(x2 - x1)/norm(x1);      % error check 
-        
-        save timings NN RR T_qr0 T_qr1 T_chol T_update ERR    
+
+
+        % iterative refinement
+        r2 = b - A*x2 - U*(V'*x2);                     
+        x0r = AtAsolver(A'*r2);
+        e2r = WoodburyLS(A,r2,U,V,x0r,AtAsolver);
+        x2r = x2 + e2r; % refined x2
+        ERR2(i,j) = norm(x2r - x1)/norm(x1);     % error check 
+
+        save timings NN RR T_qr0 T_qr1 T_chol T_update ERR ERR2
     end
 end
 
+disp('maximal relative forward error WITHOUT iterative refinement')
+max(max(ERR))
+
+disp('maximal relative forward error WITH iterative refinement')
+max(max(ERR2))
 
 %%
 mydefaults
@@ -83,5 +93,3 @@ ylabel('speedup over QR')
 grid on
 shg
 mypdf('WoodburyLS_timings',.6,0.8)
-
-
