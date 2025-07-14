@@ -43,21 +43,22 @@ figure(1)
 clf
 mydefaults
 hold on 
-plot(x,QRTimes(:,1)./WoodburyTimes(:,1),'-+',"Color",[  0    0.4470    0.7410])
-plot(x,QRTimes(:,2)./WoodburyTimes(:,2),'-+',"Color",[ 0.8500    0.3250    0.0980])
-plot(x,QRTimes(:,3)./WoodburyTimes(:,3),'-+',"Color",[   0.9290    0.6940    0.1250])
+plot(x,QRTimes(:,1)./WoodburyTimes(:,1),'-x',"Color",[  0    0.4470    0.7410])
+plot(x,QRTimes(:,2)./WoodburyTimes(:,2),'-x',"Color",[ 0.8500    0.3250    0.0980])
+plot(x,QRTimes(:,3)./WoodburyTimes(:,3),'-x',"Color",[   0.9290    0.6940    0.1250])
 
-plot(x,QRTimes(:,1)./QRUpdateTimes(:,1),'-x',"Color",[  0    0.4470    0.7410])
-plot(x,QRTimes(:,2)./QRUpdateTimes(:,2),'-x',"Color",[ 0.8500    0.3250    0.0980])
-plot(x,QRTimes(:,3)./QRUpdateTimes(:,3),'-x',"Color",[   0.9290    0.6940    0.1250])
+plot(x,QRTimes(:,1)./QRUpdateTimes(:,1),'--x',"Color",[  0    0.4470    0.7410])
+plot(x,QRTimes(:,2)./QRUpdateTimes(:,2),'--x',"Color",[ 0.8500    0.3250    0.0980])
+plot(x,QRTimes(:,3)./QRUpdateTimes(:,3),'--x',"Color",[   0.9290    0.6940    0.1250])
 hold off
 title('number of rows m = 1e5')
 xlabel('number of columns n') 
-legend('r = 10, WoodburyLS','r = 20','r = 30','r = 10, QRUpdate','r = 20','r = 30','Location','NorthWest','FontSize',18)
+% legend('r = 10, WoodburyLS','r = 20','r = 30','r = 10, QRUpdate','r = 20','r = 30','Location','NorthWest','FontSize',18)
+legend('r = 10','r = 20','r = 30','Location','NorthWest','FontSize',20)
 ylabel('Speedup over QR')
 grid on
 shg
-mypdf('WoodburyLS_QRLS_timings_compared',.6,0.8)
+mypdf('WoodburyLS_QRLS_timings_compared',.6,2)
 
 %%
 figure(2)
@@ -78,6 +79,6 @@ legend('r = 10','r = 20','r = 30','Location','NorthWest','FontSize',18)
 ylabel('Time in seconds')
 grid on
 shg
-mypdf('WoodburyLS_QRLS_timings',.6,0.8)
+mypdf('WoodburyLS_QRLS_timings',.1,0.8)
 
 
