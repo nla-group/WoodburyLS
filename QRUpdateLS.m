@@ -21,7 +21,7 @@ for i = 1:r
         QTb(idx) = G'* QTb(idx);
     end
 end
-R= R + W*V'; % R now has r subdiagonals
+R = R + W*V'; % R now has r subdiagonals
 % now return R to upper triangular form using Householder reflectors
 for i = 1:n
     [v,beta] = House(R(i:i+r,i));
