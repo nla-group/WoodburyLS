@@ -13,7 +13,7 @@ R = [R;zeros(r,n)];
 W = [Q, Qappend]'*U;
 % reduce W to upper triangular using Givens rotations, and apply to R and QTb
 for i = 1:r
-    for k = n-1+r:-1:0+i
+    for k = n-1+r:-1:i
         idx = [k,k+1];
         G = planerot(W(idx,i));
         R(idx,1:n) = G*R(idx,1:n);
