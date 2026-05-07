@@ -1,7 +1,7 @@
 function x = QRUpdateLS(Q,R,U,V,b)
-% QRUpdateLS Economy QR update to least squares solution .
+% QRUpdateLS Economy QR update to least squares solution.
 % x = QRUpdateLS (Q,R,U,V,b) solves the least squares problem
-% min_x || ( QR + UV ' )x - b ||, where Q is m x n orthogonal ,
+% min_x || ( QR + UV ' )x - b ||, where Q is m x n orthogonal,
 % m >= n, R is n x n upper triangular , U is m x r, and V is n x r.
 [n,r] = size(V);
 % orthogonalise U wrt Q0
