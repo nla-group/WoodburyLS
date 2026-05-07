@@ -16,15 +16,21 @@ for i = 1:r
         [c,s] = Givens(W(k,i),W(k+1,i));
         G = [c s;-s c];
         idx = [k,k+1];
-        R(idx ,1:n) = G'*R(idx ,1:n);
-        W(idx ,:) = G'*W(idx ,:);
-        QTb(idx) = G'* QTb(idx);
+        R(idx,1:n) = G'*R(idx,1:n);
+        W(idx,:) = G'*W(idx,:);
+        QTb(idx) = G'*QTb(idx);
+        % idx = [k,k+1];
+        % G = planerot(W(idx,i));
+        % R(idx,1:n) = G*R(idx,1:n);
+        % W(idx,:) = G*W(idx,:);
+        % QTb(idx) = G*QTb(idx);
     end
 end
 R = R + W*V'; % R now has r subdiagonals
 % now return R to upper triangular form using Householder reflectors
 for i = 1:n
-    [v,beta] = House(R(i:i+r,i));
+    % [v,beta] = gallery("house", R(i:i+r,i));
+    [v,beta] = House(R(i:i+r,i)); 
     QTb(i:i+r) = QTb(i:i+r) - beta*v*(v'* QTb(i:i+r));
     R(i:i+r,i:n) = R(i:i+r,i:n) - (beta*v)*(v'*R(i:i+r,i:n));
 end
