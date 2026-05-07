@@ -1,5 +1,5 @@
 % demo.m
-m = 1e4; n = 500; r = 20;
+m = 10; n = 5; r = 2;
 A = randn(m,n);
 U = randn(m,r); V = randn(n,r);
 b = (A+U*V')*randn(n ,1) + 1e-6*randn(m,1);
