@@ -6,7 +6,7 @@ function [Q,R] = QRUpdate(Q0,R0,U,V)
 % Adds WV^T to R, which causes no additional fill in.
 % Uses householder reflections to reduce R back to upper triangular.
 % Q0 is mxn orthogonal, R0 is nxn upper triangular, U is mxr,
-% and V is nxr.
+% and V is nxr. We assume m >= n+r.
 % Q is mxn orthogonal and  R is nxn upper triangular so that
 % QR = Q0*R0 + U*V'.
 % Bloor Riley et al, A Sherman–Morrison–Woodbury Approach to Solving
@@ -15,8 +15,7 @@ function [Q,R] = QRUpdate(Q0,R0,U,V)
 [n,r] = size(V);
 % orthogonalise U wrt Q0
 U1 = U-Q0*(Q0'*U);
-U1 = U1-Q0*(Q0'*U1); % perform orthogonalisation twice
-Qappend = orth(U1);
+Qappend = orth(U1,10*eps);
 Q = [Q0,Qappend];
 R = [R0;zeros(size(Qappend,2),n)];
 W = Q'*U;
@@ -32,10 +31,10 @@ for i = 1:r
 end
 R = R + W*V'; % R is now upper trapezoidal
 % now return R to upper triangular form using householder reflectors
-for i = 1:(size(R,1)-r)
-    [v,beta] = gallery("house", R(i:i+r,i));
-    R(i:i+r,i:n) = R(i:i+r,i:n) - (beta*v)*(v'*R(i:i+r,i:n));
-    Q(:,i:i+r) = Q(:,i:i+r) - beta*(Q(:,i:i+r)*v)*v';
+for k = 1:(size(R,1)-r)
+    [v,beta] = gallery("house", R(k:k+r,k));
+    R(k:k+r,k:n) = R(k:k+r,k:n) - (beta*v)*(v'*R(k:k+r,k:n));
+    Q(:,k:k+r) = Q(:,k:k+r) - beta*(Q(:,k:k+r)*v)*v';
 end
 R = R(1:n,1:n);
 Q = Q(:,1:n);

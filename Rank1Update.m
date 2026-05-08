@@ -1,7 +1,7 @@
 function [Q,R] = Rank1Update(Q0,R0,u,v)
 % Rank-1 update of a QR factorization.
 % Q0 is mxn orthogonal, R0 is nxn upper triangular, u is mx1,
-% and v is nx1, with m >= n.
+% and v is nx1, with m > n.
 % Q is mxn orthogonal and R is mxn upper triangular so that
 % QR = Q0*R0 + u*v'.
 % This is a modified version of
@@ -10,9 +10,12 @@ function [Q,R] = Rank1Update(Q0,R0,u,v)
 n = size(Q0,2);
 % orthogonalise u wrt Q0
 u1 = u-Q0*(Q0'*u);
-u1 = u1-Q0*(Q0'*u1); % perform orthogonalisation twice
-Q = [Q0,u1/norm(u1)];
-R = [R0;zeros(1,n)];
+if norm(u1) > 10*eps
+    Q = [Q0,u1/norm(u1)];
+    R = [R0;zeros(1,n)];
+else
+    Q = Q0; R = R0;
+end
 w = Q'*u;
 % Reduce w to a multiple of e1...
 for k=length(w)-1:-1:1
@@ -24,7 +27,7 @@ for k=length(w)-1:-1:1
 end
 R(1,:) = R(1,:) + w(1)*v';
 % Restore R (now upper Hessenberg) to upper triangular form...
-for k=1:n
+for k=1:size(R,1)-1
     idx = [k,k+1];
     G = planerot(R(idx,k));
     R(idx,k:n) = G*R(idx,k:n);
