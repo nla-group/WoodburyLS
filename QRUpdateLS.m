@@ -8,13 +8,14 @@ function x = QRUpdateLS(Q,R,U,V,b)
 % orthogonalise U wrt Q
 U1 = U-Q*(Q'*U); 
 U1 = U1-Q*(Q'*U1); % perform orthogonalisation twice
-[Qappend, ~] = qr(U1,0);
+Qappend = orth(U1);
 QTb = [Q'*b; Qappend'*b];
-R = [R; zeros(r,n)];
+R = [R; zeros(size(Qappend,2),n)];
 W = [Q, Qappend]'*U;
+%d = min(size(W,1), n+r);
 % reduce W to upper triangular using Givens rotations, and apply to R and QTb
 for i = 1:r
-    for k = n-1+r:-1:i % for LS solve we only need to reduce first n+r rows
+    for k = size(W,1)-1:-1:i
         idx = [k,k+1];
         G = planerot(W(idx,i));
         R(idx,:) = G*R(idx,:);
@@ -22,12 +23,12 @@ for i = 1:r
         QTb(idx) = G*QTb(idx);
     end
 end
-R = R + W*V'; % R(1:n+r,:) is now upper trapezoidal
+R = R + W*V'; % R is now upper trapezoidal
 % now return R to upper triangular form using Householder reflectors
-for i = 1:n
+for i = 1:(size(R,1)-r)
     [v,beta] = gallery("house", R(i:i+r,i));
-    QTb(i:i+r) = QTb(i:i+r) - beta*v*(v'*QTb(i:i+r));
     R(i:i+r,i:n) = R(i:i+r,i:n) - (beta*v)*(v'*R(i:i+r,i:n));
+    QTb(i:i+r) = QTb(i:i+r) - beta*v*(v'*QTb(i:i+r));
 end
 R = R(1:n,1:n);
 x = R\QTb(1:n);

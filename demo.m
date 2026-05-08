@@ -4,7 +4,7 @@ A = randn(m,n);
 U = randn(m,r); V = randn(n,r);
 Ahat = A + U*V';
 b = Ahat*randn(n ,1);
-[Q,R] = qr(A);
+[Q,R] = qr(A,0);
 % solve unmodified LS problem via QR
 [x0 , AtAsolver] = WoodburyLS(A,b);
 % inefficient : min ||b-(A+UV ')x|| via QR
@@ -24,3 +24,9 @@ norm((Ahat*x1-b))  % 1e-11
 norm((Ahat*x2-b))  % 1e-11
 norm((Ahat*x3-b))  % 1e-9
 norm((Ahat*x3r-b)) % 1e-12
+
+[Qhat, Rhat] = QRUpdate(Q,R,U,V);
+norm(Qhat*Rhat - Ahat)
+
+[Qhat, Rhat] = Rank1Update(Q,R,U(:,1),V(:,1));
+norm(Qhat*Rhat - (A + U(:,1)*V(:,1)'))
