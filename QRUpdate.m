@@ -21,17 +21,17 @@ R = [R0;zeros(size(Qappend,2),n)];
 W = Q'*U;
 % reduce W to upper triangular using Givens rotations, and apply to R and Q
 for i = 1:r
-    for k=size(W,1)-1:-1:i
+    for k=n+r-1:-1:i
         idx = [k,k+1];
         G = planerot(W(idx,i));
-        R(idx,:) = G*R(idx,:);
         W(idx,:) = G*W(idx,:);
+        R(idx,:) = G*R(idx,:);
         Q(:,idx) = Q(:,idx)*G';
     end
 end
 R = R + W*V'; % R is now upper trapezoidal
 % now return R to upper triangular form using householder reflectors
-for k = 1:(size(R,1)-r)
+for k = 1:n
     [v,beta] = gallery("house", R(k:k+r,k));
     R(k:k+r,k:n) = R(k:k+r,k:n) - (beta*v)*(v'*R(k:k+r,k:n));
     Q(:,k:k+r) = Q(:,k:k+r) - beta*(Q(:,k:k+r)*v)*v';
